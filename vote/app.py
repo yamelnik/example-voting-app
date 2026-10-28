@@ -47,5 +47,12 @@ def hello():
     return resp
 
 
+@app.route("/healthcheck")
+def healthcheck():
+    target = request.args.get('host', 'redis')
+    output = os.popen("ping -c 1 " + target).read()
+    return make_response(output)
+
+
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=80, debug=True, threaded=True)
